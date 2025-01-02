@@ -7,14 +7,15 @@ public class EnemySideways : MonoBehaviour
     [SerializeField] private float distance;
     [SerializeField] private float speed;
 
-    private bool isMovingLeft;
+    [SerializeField] private bool isMovingLeft;
     private Vector3 direction;
 
     private Vector3 initialPosition;
 
     private void Start()
     {
-        isMovingLeft = true;
+        if (!isMovingLeft)
+            FlipSprite();
         initialPosition = transform.position;
     }
 
@@ -32,7 +33,8 @@ public class EnemySideways : MonoBehaviour
             {
                 isMovingLeft = false;
                 // TODO: there should be a better way to do this?
-                transform.localScale = new Vector3(-1 * transform.localScale.x, 1 * transform.localScale.y, 1 * transform.localScale.z);
+                FlipSprite();
+
             }
             else
                 transform.position += speed * Time.deltaTime * Vector3.left;
@@ -43,10 +45,15 @@ public class EnemySideways : MonoBehaviour
             {
 
                 isMovingLeft = true;
-                transform.localScale = new Vector3(-1 * transform.localScale.x, 1 * transform.localScale.y, 1 * transform.localScale.z);
+                FlipSprite();
             }
             else
                 transform.position += speed * Time.deltaTime * Vector3.right;
         }
+    }
+
+    private void FlipSprite()
+    {
+        transform.localScale = new Vector3(-1 * transform.localScale.x, 1 * transform.localScale.y, 1 * transform.localScale.z);
     }
 }
