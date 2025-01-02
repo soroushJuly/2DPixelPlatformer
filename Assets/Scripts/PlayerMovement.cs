@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float speed;
+    [SerializeField] private float jumpPower;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask wallLayer;
     private Rigidbody2D body;
@@ -10,11 +11,6 @@ public class PlayerMovement : MonoBehaviour
     private BoxCollider2D boxCollider;
 
     private bool isGrounded;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
 
     // Update is called once per frame
     void Update()
@@ -47,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
-        body.linearVelocity = new Vector3(body.linearVelocity.x, speed);
+        body.linearVelocity = new Vector3(body.linearVelocity.x, jumpPower);
     }
 
     private bool IsGrounded()
