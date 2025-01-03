@@ -1,7 +1,4 @@
-using System;
 using System.Collections;
-using Unity.VisualScripting;
-using Unity.VisualScripting.Dependencies.NCalc;
 using UnityEngine;
 
 public class EnemyBoss : MonoBehaviour
@@ -9,6 +6,7 @@ public class EnemyBoss : MonoBehaviour
     [SerializeField] private int damage;
     [SerializeField] private float attackCooldown;
     [SerializeField] private float movementSpeed;
+    [SerializeField] private AudioClip scytheSwing;
     [SerializeField] private GameObject player;
     [SerializeField] private BoxCollider2D boxCollider;
 
@@ -33,6 +31,7 @@ public class EnemyBoss : MonoBehaviour
         // In attack range
         if (playerIsInAttackRange && cooldownTimer > attackCooldown)
         {
+            SoundManager.instance.PlaySound(scytheSwing);
             animator.SetBool("moving", false);
             animator.SetTrigger("attack");
             cooldownTimer = 0;

@@ -5,7 +5,9 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     [SerializeField] private float maxHealth;
+    [SerializeField] private AudioClip hurtSound;
     private Animator animator;
+
     public float health { get; private set; }
 
     private void Awake()
@@ -22,6 +24,7 @@ public class Health : MonoBehaviour
         if (health > 0)
         {
             // player hurt
+            SoundManager.instance.PlaySound(hurtSound);
             animator.SetTrigger("hurt");
             // Make Player Invulnerable for a while
             StartCoroutine(Invulnerable());
@@ -29,8 +32,9 @@ public class Health : MonoBehaviour
         else
         {
             // player dies
-            animator.SetTrigger("die");
             GetComponent<PlayerMovement>().enabled = false;
+            //animator.SetBool("grounded");
+            animator.SetTrigger("die");
         }
     }
 
