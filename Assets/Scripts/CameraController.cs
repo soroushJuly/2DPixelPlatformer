@@ -16,6 +16,11 @@ public class CameraController : MonoBehaviour
         velocity = Vector3.zero;
     }
 
+    private void Awake()
+    {
+        currentPositionX = transform.position.x;
+    }
+
     public void MoveToNewRoom(Transform newRoom)
     {
         currentPositionX = newRoom.position.x;
