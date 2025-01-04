@@ -6,6 +6,8 @@ public class Health : MonoBehaviour
 {
     [SerializeField] private float maxHealth;
     [SerializeField] private AudioClip hurtSound;
+
+    private PlayerRespawn PlayerRespawn;
     private Animator animator;
 
     public float health { get; private set; }
@@ -15,6 +17,7 @@ public class Health : MonoBehaviour
         health = maxHealth;
         // Assuming that the health is always in an object with animator
         animator = GetComponent<Animator>();
+        PlayerRespawn = GetComponent<PlayerRespawn>();
     }
 
     public void TakeDamage(float damage)
@@ -35,15 +38,27 @@ public class Health : MonoBehaviour
             GetComponent<PlayerMovement>().enabled = false;
             //animator.SetBool("grounded");
             animator.SetTrigger("die");
+            animator.Play("Idle");
+            if (PlayerRespawn != null)
+                PlayerRespawn.Respawn();
+
         }
+    }
+
+    public void Respawn()
+    {
+        health = maxHealth;
+        animator.ResetTrigger("die");
+        GetComponent<PlayerMovement>().enabled = true;
+
     }
 
     private IEnumerator Invulnerable()
     {
         // layer 10,11 are player and enemy
-        Physics2D.IgnoreLayerCollision(10,11, true);
+        Physics2D.IgnoreLayerCollision(10, 11, true);
         // wait for the duration, before exe the next line
         yield return new WaitForSeconds(2);
-        Physics2D.IgnoreLayerCollision(10,11, false);
+        Physics2D.IgnoreLayerCollision(10, 11, false);
     }
 }
