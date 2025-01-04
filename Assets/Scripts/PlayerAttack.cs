@@ -46,15 +46,12 @@ public class PlayerAttack : MonoBehaviour
 
     private void CheckHit()
     {
-        Debug.Log(_hitColliderList.Count);
         for (int i = 0; i < _hitColliderList.Count; i++)
         {
             // kill the small enemies instantly
             if (_hitColliderList[i].CompareTag("Enemy"))
             {
                 _hitColliderList[i].gameObject.SetActive(false);
-                //_hitColliderList[i].enabled = false;
-                //_hitColliderList[i].GetComponentInParent<SpriteRenderer>(). = false;
             }
             else if (_hitColliderList[i].CompareTag("Boss"))
             {

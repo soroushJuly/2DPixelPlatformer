@@ -10,10 +10,12 @@ public class EnemyBoss : MonoBehaviour
     [SerializeField] private AudioClip scytheSwing;
     [SerializeField] private GameObject player;
     [SerializeField] private BoxCollider2D boxCollider;
+    [SerializeField] private GameObject healthBar;
 
 
     private float health;
     private bool isDead;
+    public bool isActive;
     private Animator animator;
     private float cooldownTimer;
     public bool playerIsInAttackRange;
@@ -21,13 +23,16 @@ public class EnemyBoss : MonoBehaviour
     void Start()
     {
         playerIsInAttackRange = false;
+        isActive = false;
         cooldownTimer = Mathf.Infinity;
         animator = GetComponent<Animator>();
+        health = maxHealth;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!isActive) { return; }
         cooldownTimer += Time.deltaTime;
 
         if (isDead) { return; }
@@ -46,7 +51,6 @@ public class EnemyBoss : MonoBehaviour
         // Enemy far, Get closer to the enemy
         else if (!playerIsInAttackRange && Mathf.Abs(playerDistanceX) > 0.1f)
         {
-            //Debug.Log(playerDistanceX);
             // move on the player direction
             if (playerDistanceX <= 0)
             {
@@ -66,22 +70,20 @@ public class EnemyBoss : MonoBehaviour
             animator.SetBool("moving", true);
         }
         // Enemy far and higher ground, teleport to higher platform!
-        else if (!playerIsInAttackRange && Mathf.Abs(playerDistanceX) < 0.1f)
-        {
-            // teleport to the platform
-            animator.SetBool("moving", false);
-            StartCoroutine(Teleport());
+        //else if (!playerIsInAttackRange && Mathf.Abs(playerDistanceX) < 0.1f)
+        //{
+        //    // teleport to the platform
+        //    animator.SetBool("moving", false);
+        //    //StartCoroutine(Teleport());
 
-        }
+        //}
     }
 
     private IEnumerator Teleport()
     {
-        GetComponent<SpriteRenderer>().enabled = false;
-        enabled = false;
+        gameObject.SetActive(false);
         yield return new WaitForSeconds(1);
-        GetComponent<SpriteRenderer>().enabled = true;
-        enabled = true;
+        gameObject.SetActive(true);
         transform.position = new Vector3(transform.position.x,
                player.GetComponent<BoxCollider2D>().bounds.center.y - player.GetComponent<BoxCollider2D>().bounds.size.y / 2, transform.position.z);
     }
@@ -122,12 +124,19 @@ public class EnemyBoss : MonoBehaviour
 
         if (health > 0)
         {
-            animator.SetTrigger("Hurt");
+            animator.SetBool("moving", false);
+            animator.SetTrigger("hurt");
         }
         else
         {
-            animator.SetTrigger("Death");
+            animator.SetTrigger("die");
             isDead = true;
         }
+        healthBar.transform.localScale = new Vector3(health / maxHealth * healthBar.transform.localScale.x, healthBar.transform.localScale.y, 1);
+    }
+
+    public void Deactivate()
+    {
+        gameObject.SetActive(false);
     }
 }
