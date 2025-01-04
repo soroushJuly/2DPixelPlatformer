@@ -4,27 +4,36 @@ using UnityEngine;
 
 public class TextBlinking : MonoBehaviour
 {
-    private float timer;
+    private bool isActive;
     private void Awake()
     {
-        timer = 0f;
+        isActive = true;
+    }
+    private void Start()
+    {
+        StartCoroutine(Blinking());
     }
 
     private void Update()
     {
-        timer += Time.deltaTime;
+    }
 
-        if (timer > 0 && timer < 0.5f)
+    private IEnumerator Blinking()
+    {
+        while (enabled)
         {
-            GetComponent<TextMeshProUGUI>().enabled = true;
+            if (!isActive)
+            {
+                GetComponent<TextMeshProUGUI>().enabled = false;
+                isActive = true;
+            }
+            else
+            {
+                GetComponent<TextMeshProUGUI>().enabled = true;
+                isActive = false;
+            }
+            yield return new WaitForSeconds(0.5f);
         }
-        else if (timer >= 0.5f && timer < 1f)
-        {
-            GetComponent<TextMeshProUGUI>().enabled = false;
-        }
-        else
-        {
-            timer = 0f;
-        }
+        yield break;
     }
 }

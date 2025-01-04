@@ -11,6 +11,7 @@ public class Health : MonoBehaviour
     private Animator animator;
 
     public float health { get; private set; }
+    public bool isDead { get; private set; }
 
     private void Awake()
     {
@@ -41,6 +42,7 @@ public class Health : MonoBehaviour
             animator.Play("Idle");
             if (PlayerRespawn != null)
                 PlayerRespawn.Respawn();
+            isDead = true;
 
         }
     }
@@ -50,7 +52,7 @@ public class Health : MonoBehaviour
         health = maxHealth;
         animator.ResetTrigger("die");
         GetComponent<PlayerMovement>().enabled = true;
-
+        isDead = false;
     }
 
     private IEnumerator Invulnerable()
