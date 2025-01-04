@@ -38,7 +38,8 @@ public class GameManager : MonoBehaviour
         {
             _currentState = states.PAUSE;
         }
-        else if (player.GetComponent<Health>().isDead && _currentState == states.PLAY)
+        // TODO:
+        else if (false && _currentState == states.PLAY)
         {
             _currentState = states.OVER;
         }

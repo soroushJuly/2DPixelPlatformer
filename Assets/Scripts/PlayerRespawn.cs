@@ -8,6 +8,7 @@ public class PlayerRespawn : MonoBehaviour
     private void Awake()
     {
         playerHealth = GetComponent<Health>();
+        currentCheckpoint = transform;
     }
     public void Respawn()
     {

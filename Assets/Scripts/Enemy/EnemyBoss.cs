@@ -4,12 +4,16 @@ using UnityEngine;
 public class EnemyBoss : MonoBehaviour
 {
     [SerializeField] private int damage;
+    [SerializeField] private float maxHealth;
     [SerializeField] private float attackCooldown;
     [SerializeField] private float movementSpeed;
     [SerializeField] private AudioClip scytheSwing;
     [SerializeField] private GameObject player;
     [SerializeField] private BoxCollider2D boxCollider;
 
+
+    private float health;
+    private bool isDead;
     private Animator animator;
     private float cooldownTimer;
     public bool playerIsInAttackRange;
@@ -25,8 +29,11 @@ public class EnemyBoss : MonoBehaviour
     void Update()
     {
         cooldownTimer += Time.deltaTime;
+
+        if (isDead) { return; }
         float playerDistance = PlayerDistance();
         float playerDistanceX = GetPlayerDistanceX();
+
 
         // In attack range
         if (playerIsInAttackRange && cooldownTimer > attackCooldown)
@@ -64,7 +71,7 @@ public class EnemyBoss : MonoBehaviour
             // teleport to the platform
             animator.SetBool("moving", false);
             StartCoroutine(Teleport());
-           
+
         }
     }
 
@@ -107,5 +114,20 @@ public class EnemyBoss : MonoBehaviour
     private void FlipSprite()
     {
         transform.localScale = new Vector3(-1 * transform.localScale.x, 1 * transform.localScale.y, 1 * transform.localScale.z);
+    }
+
+    public void TakeDamage(float damage)
+    {
+        health = Mathf.Clamp(health - damage, 0, maxHealth);
+
+        if (health > 0)
+        {
+            animator.SetTrigger("Hurt");
+        }
+        else
+        {
+            animator.SetTrigger("Death");
+            isDead = true;
+        }
     }
 }

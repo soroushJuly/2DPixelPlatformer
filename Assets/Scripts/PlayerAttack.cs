@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
@@ -10,13 +11,16 @@ public class PlayerAttack : MonoBehaviour
     private PlayerMovement playerMovement;
     private float cooldownTimer;
 
+    private float m_playerDamage = 100;
+
+    private Collection<Collider2D> _hitColliderList;
+
     // Update is called once per frame
     void Update()
     {
         //if (Input.GetMouseButton(0) && (cooldownTimer > attackCooldown) && )
         if (Input.GetMouseButton(0) && (cooldownTimer > attackCooldown) && playerMovement.canAttack())
         {
-            Console.WriteLine("atta");
             Attack();
         }
 
@@ -29,6 +33,8 @@ public class PlayerAttack : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
         // To make sure players can attack in the beginning
         cooldownTimer = Mathf.Infinity;
+
+        _hitColliderList = new Collection<Collider2D>();
     }
 
     private void Attack()
@@ -36,5 +42,33 @@ public class PlayerAttack : MonoBehaviour
         animator.SetTrigger("attack");
         SoundManager.instance.PlaySound(attackSound);
         cooldownTimer = 0;
+    }
+
+    private void CheckHit()
+    {
+        Debug.Log(_hitColliderList.Count);
+        for (int i = 0; i < _hitColliderList.Count; i++)
+        {
+            // kill the small enemies instantly
+            if (_hitColliderList[i].CompareTag("Enemy"))
+            {
+                _hitColliderList[i].gameObject.SetActive(false);
+                //_hitColliderList[i].enabled = false;
+                //_hitColliderList[i].GetComponentInParent<SpriteRenderer>(). = false;
+            }
+            else if (_hitColliderList[i].CompareTag("Boss"))
+            {
+                _hitColliderList[i].GetComponent<EnemyBoss>().TakeDamage(m_playerDamage);
+            }
+        }
+    }
+
+    public void AddCollision(Collider2D collision)
+    {
+        _hitColliderList.Add(collision);
+    }
+    public void RemoveCollision(Collider2D collision)
+    {
+        _hitColliderList.Remove(collision);
     }
 }
