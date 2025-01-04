@@ -73,7 +73,8 @@ public class GameManager : MonoBehaviour
 
     public void PlayAgain()
     {
-        SceneManager.LoadScene(0);
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name);
     }
 
     public void Quit()

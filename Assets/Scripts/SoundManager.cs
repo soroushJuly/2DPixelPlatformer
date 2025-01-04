@@ -16,7 +16,7 @@ public class SoundManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
         // Destroy duplicate
-        else if (instance != null && instance == this)
+        else if (instance != null && instance != this)
         {
             Destroy(gameObject);
         }
