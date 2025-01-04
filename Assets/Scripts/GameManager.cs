@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameObject player;
+    [SerializeField] private GameObject boss;
     // Menu UIs
     [SerializeField] private GameObject MainMenu;
     [SerializeField] private GameObject PauseMenu;
@@ -38,8 +39,7 @@ public class GameManager : MonoBehaviour
         {
             _currentState = states.PAUSE;
         }
-        // TODO:
-        else if (false && _currentState == states.PLAY)
+        else if (boss.GetComponent<EnemyBoss>().isDead && _currentState == states.PLAY)
         {
             _currentState = states.OVER;
         }
@@ -103,5 +103,6 @@ public class GameManager : MonoBehaviour
     private void EnterOver()
     {
         GameOverMenu.SetActive(true);
+        player.GetComponent<PlayerMovement>().enabled = false;
     }
 }

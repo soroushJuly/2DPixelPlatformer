@@ -11,7 +11,8 @@ public class PlayerAttack : MonoBehaviour
     private PlayerMovement playerMovement;
     private float cooldownTimer;
 
-    private float m_playerDamage = 100;
+    private float m_playerDamage = 40;
+    public void SetPlayerDamage(float damage) { m_playerDamage = damage; }
 
     private Collection<Collider2D> _hitColliderList;
 

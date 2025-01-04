@@ -14,7 +14,7 @@ public class EnemyBoss : MonoBehaviour
 
 
     private float health;
-    private bool isDead;
+    public bool isDead { get; private set; }
     public bool isActive;
     private Animator animator;
     private float cooldownTimer;
@@ -126,6 +126,8 @@ public class EnemyBoss : MonoBehaviour
         {
             animator.SetBool("moving", false);
             animator.SetTrigger("hurt");
+            // Make Player Invulnerable for a while
+            StartCoroutine(Invulnerable());
         }
         else
         {
@@ -138,5 +140,21 @@ public class EnemyBoss : MonoBehaviour
     public void Deactivate()
     {
         gameObject.SetActive(false);
+        isActive = false;
+    }
+
+    public void Activate()
+    {
+        gameObject.SetActive(true);
+        isActive = true;
+    }
+
+    private IEnumerator Invulnerable()
+    {
+        // layer 10,11 are player and enemy
+        Physics2D.IgnoreLayerCollision(11, 10, true);
+        // wait for the duration, before exe the next line
+        yield return new WaitForSeconds(1.1f);
+        Physics2D.IgnoreLayerCollision(11, 10, false);
     }
 }

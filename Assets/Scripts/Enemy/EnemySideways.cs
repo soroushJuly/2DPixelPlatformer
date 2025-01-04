@@ -27,6 +27,7 @@ public class EnemySideways : MonoBehaviour
 
     private void Update()
     {
+        if (!enabled) return;
         if (isMovingLeft)
         {
             if (transform.position.x < initialPosition.x - distance)

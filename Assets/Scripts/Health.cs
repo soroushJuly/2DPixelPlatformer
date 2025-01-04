@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -36,14 +35,7 @@ public class Health : MonoBehaviour
         else
         {
             // player dies
-            GetComponent<PlayerMovement>().enabled = false;
-            //animator.SetBool("grounded");
-            animator.SetTrigger("die");
-            animator.Play("Idle");
-            if (PlayerRespawn != null)
-                PlayerRespawn.Respawn();
-            isDead = true;
-
+            Die();
         }
     }
 
@@ -62,5 +54,16 @@ public class Health : MonoBehaviour
         // wait for the duration, before exe the next line
         yield return new WaitForSeconds(2);
         Physics2D.IgnoreLayerCollision(10, 11, false);
+    }
+
+    public void Die()
+    {
+        GetComponent<PlayerMovement>().enabled = false;
+        //animator.SetBool("grounded");
+        animator.SetTrigger("die");
+        animator.Play("Idle");
+        if (PlayerRespawn != null)
+            PlayerRespawn.Respawn();
+        isDead = true;
     }
 }

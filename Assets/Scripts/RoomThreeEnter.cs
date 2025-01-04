@@ -13,12 +13,7 @@ public class RoomThreeEnter : MonoBehaviour
 
         if (collision.CompareTag("Player"))
         {
-            prevAudioClip = AudioSource.clip;
-            if (AudioSource != null)
-            {
-                AudioSource.clip = RoomMusic;
-                AudioSource.Play();
-            }
+            PlayMusic();
         }
 
         boss.SetActive(true);
@@ -29,6 +24,15 @@ public class RoomThreeEnter : MonoBehaviour
         if (AudioSource != null)
         {
             AudioSource.clip = prevAudioClip;
+            AudioSource.Play();
+        }
+    }
+    public void PlayMusic()
+    {
+        prevAudioClip = AudioSource.clip;
+        if (AudioSource != null)
+        {
+            AudioSource.clip = RoomMusic;
             AudioSource.Play();
         }
     }
